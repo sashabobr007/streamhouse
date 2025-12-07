@@ -201,7 +201,7 @@ public class FlinkStreamingJob {
         // 1. Total actions per user in 2-hour windows
         stream
             .keyBy(action -> action.userId)
-            .window(TumblingEventTimeWindows.of(Time.minutes(3)))
+            .window(TumblingEventTimeWindows.of(Time.hours(2)))
             .process(new ProcessWindowFunction<UserAction, UserAggregation, Long, TimeWindow>() {
                 @Override
                 public void process(
@@ -251,7 +251,7 @@ public class FlinkStreamingJob {
         // 2. Specific action types per user in 2-hour windows
         stream
             .keyBy(action -> action.userId + "|" + action.actionType)
-            .window(TumblingEventTimeWindows.of(Time.minutes(2)))
+            .window(TumblingEventTimeWindows.of(Time.hours(2)))
             .process(new ProcessWindowFunction<UserAction, UserAggregation, String, TimeWindow>() {
                 @Override
                 public void process(
